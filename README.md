@@ -19,22 +19,6 @@ Innovative Stacking Method for Enhanced Data Fusion in Pollutant Population Risk
 ```
 con_code
 ├─ figure
-├─ out
-│  ├─ csv_file
-│  │  └─ metrics
-│  ├─ mat_file
-│  │  ├─ landmat
-│  │  │  └─ land_pm.mat
-│  │  └─ PMpopmat
-│  │     ├─ 2020PM10_avgConc_test.mat
-│  │     ├─ 2020PM25_avgConc_test.mat
-│  │     ├─ PM10_pop_all.mat
-│  │     └─ PM25_pop_all.mat
-│  └─ npy_file
-│     ├─ daily_pm10.npy
-│     ├─ daily_pm25.npy
-│     ├─ pm10_2020_pop.npy
-│     └─ pm25_2020_pop.npy
 ├─ PM_DL.py
 ├─ PM_pop.py
 ├─ PM_pred.py
