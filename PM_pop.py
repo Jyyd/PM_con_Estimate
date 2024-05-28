@@ -187,17 +187,17 @@ def get_land_mat():
 def load_pm_pop_data(pm_type:str='PM10'):
     if pm_type == 'PM10':
         file_path = './out/mat_file/PMpopmat/PM10_pop_all.mat'
-        avgConc_name = 'avgConc_pm10'
+        avgconc_path = './out/mat_file/PMpopmat/2020PM10_avgConc_test.mat'
     elif pm_type == 'PM2.5':
         file_path = './out/mat_file/PMpopmat/PM25_pop_all.mat'
-        avgConc_name = 'avgConc_pm25'
+        avgconc_path = './out/mat_file/PMpopmat/2020PM25_avgConc_test.mat'
     else:
         raise ValueError('Invalid PM type. Please choose between PM10 and PM2.5')
 
     pmmat_data = loadmat(file_path)
     matlon = pmmat_data['matlon'][0][:]
     matlat = pmmat_data['matlat'][0][:]
-    avgPM = pmmat_data[avgConc_name]
+    avgPM = loadmat(avgconc_path)['avgConc']
     pop_bt = pmmat_data['pop_bt']
     pop_mt = pmmat_data['pop_mt']
     pop_ft = pmmat_data['pop_ft']
@@ -307,15 +307,6 @@ def save_annual_tiff():
     (matlon, matlat, avgPM25, 
     pop_bt, pop_mt, pop_ft, pop_bt_0_14, pop_bt_15_64, pop_bt_65) = load_pm_pop_data('PM2.5')
 
-    daily_pm10 = np.load('./out/npy_file/daily_pm10.npy')
-    daily_pm25 = np.load('./out/npy_file/daily_pm25.npy')
-    aqg_pm10 = np.zeros_like(daily_pm10)
-    aqg_pm25 = np.zeros_like(daily_pm25)
-    aqg_pm10[daily_pm10 >= 45] = 1
-    aqg_pm25[daily_pm25 >= 15] = 1
-    aqg_pm10 = np.sum(aqg_pm10, axis=0)
-    aqg_pm25 = np.sum(aqg_pm25, axis=0)
-
     pm252020_data  = np.nan_to_num(avgPM25, nan=0.0)
     pm102020_data  = np.nan_to_num(avgPM10, nan=0.0)
     lon_grid, lat_grid = np.meshgrid(matlon, matlat)
@@ -337,9 +328,6 @@ def save_annual_tiff():
     weighted_pm25, weighted_pm25_district = get_district_data('./tif_file/annual/pm25_2020.tif', 'pm25_2020', pm252020_data)
     weighted_pm10, weighted_pm10_district = get_district_data('./tif_file/annual/pm10_2020.tif', 'pm10_2020', pm102020_data)
 
-    weighted_daily_pm25, weighted_daily_pm25_district = get_district_data('./tif_file/annual/aqg_pm25.tif', 'day_pm25', aqg_pm25)
-    weighted_daily_pm10, weighted_daily_pm10_district = get_district_data('./tif_file/annual/aqg_pm10.tif', 'day_pm10', aqg_pm10)
-
     weighted_pop_bt, weighted_pop_bt_district = get_district_data('./tif_file/annual/pop_bt.tif', 'pop_bt', pop_bt)
     weighted_pop_mt, weighted_pop_mt_district = get_district_data('./tif_file/annual/pop_mt.tif', 'pop_mt', pop_mt)
     weighted_pop_ft, weighted_pop_ft_district = get_district_data('./tif_file/annual/pop_ft.tif', 'pop_ft', pop_ft)
@@ -352,7 +340,6 @@ def save_annual_tiff():
 
     dataframes = [weighted_pm25, weighted_pm10,
                   weighted_pop_bt_pm25, weighted_pop_bt_pm10,
-                  weighted_daily_pm25, weighted_daily_pm10,
                   weighted_pop_bt, weighted_pop_mt, weighted_pop_ft,
                   weighted_pop_bt_0_14, weighted_pop_bt_15_64, weighted_pop_bt_65]
     weighted_data_all = dataframes[0]
@@ -381,15 +368,6 @@ def save_annual_tiff1():
     (matlon, matlat, avgPM25, 
     pop_bt, pop_mt, pop_ft, pop_bt_0_14, pop_bt_15_64, pop_bt_65) = load_pm_pop_data('PM2.5')
 
-    daily_pm10 = np.load('./out/npy_file/daily_pm10.npy')
-    daily_pm25 = np.load('./out/npy_file/daily_pm25.npy')
-    aqg_pm10 = np.zeros_like(daily_pm10)
-    aqg_pm25 = np.zeros_like(daily_pm25)
-    aqg_pm10[daily_pm10 >= 45] = 1
-    aqg_pm25[daily_pm25 >= 15] = 1
-    aqg_pm10 = np.sum(aqg_pm10, axis=0)
-    aqg_pm25 = np.sum(aqg_pm25, axis=0)
-
     pm252020_data  = np.nan_to_num(avgPM25, nan=0.0)
     pm102020_data  = np.nan_to_num(avgPM10, nan=0.0)
     lon_grid, lat_grid = np.meshgrid(matlon, matlat)
@@ -411,9 +389,6 @@ def save_annual_tiff1():
     weighted_pm25, weighted_pm25_district = get_district_data1('./tif_file/annual1/pm25_2020.tif', 'pm25_2020', pm252020_data)
     weighted_pm10, weighted_pm10_district = get_district_data1('./tif_file/annual1/pm10_2020.tif', 'pm10_2020', pm102020_data)
 
-    weighted_daily_pm25, weighted_daily_pm25_district = get_district_data1('./tif_file/annual1/aqg_pm25.tif', 'day_pm25', aqg_pm25)
-    weighted_daily_pm10, weighted_daily_pm10_district = get_district_data1('./tif_file/annual1/aqg_pm10.tif', 'day_pm10', aqg_pm10)
-
     weighted_pop_bt, weighted_pop_bt_district = get_district_data1('./tif_file/annual1/pop_bt.tif', 'pop_bt', pop_bt)
     weighted_pop_mt, weighted_pop_mt_district = get_district_data1('./tif_file/annual1/pop_mt.tif', 'pop_mt', pop_mt)
     weighted_pop_ft, weighted_pop_ft_district = get_district_data1('./tif_file/annual1/pop_ft.tif', 'pop_ft', pop_ft)
@@ -426,7 +401,6 @@ def save_annual_tiff1():
 
     dataframes = [weighted_pm25, weighted_pm10,
                   weighted_pop_bt_pm25, weighted_pop_bt_pm10,
-                  weighted_daily_pm25, weighted_daily_pm10,
                   weighted_pop_bt, weighted_pop_mt, weighted_pop_ft,
                   weighted_pop_bt_0_14, weighted_pop_bt_15_64, weighted_pop_bt_65]
     weighted_data_all = dataframes[0]
@@ -455,17 +429,8 @@ def save_annual_tiff_land():
     (matlon, matlat, avgPM25, 
     pop_bt, pop_mt, pop_ft, pop_bt_0_14, pop_bt_15_64, pop_bt_65) = load_pm_pop_data('PM2.5')
 
-    daily_pm10 = np.load('./out/npy_file/daily_pm10.npy')
-    daily_pm25 = np.load('./out/npy_file/daily_pm25.npy')
-    aqg_pm10 = np.zeros_like(daily_pm10)
-    aqg_pm25 = np.zeros_like(daily_pm25)
-    aqg_pm10[daily_pm10 >= 45] = 1
-    aqg_pm25[daily_pm25 >= 15] = 1
-    aqg_pm10 = np.sum(aqg_pm10, axis=0)
-    aqg_pm25 = np.sum(aqg_pm25, axis=0)
-
-    pm252020_data  = np.nan_to_num(avgPM25, nan=0.0)
-    pm102020_data  = np.nan_to_num(avgPM10, nan=0.0)
+    pm252020_data = np.nan_to_num(avgPM25, nan=0.0)
+    pm102020_data = np.nan_to_num(avgPM10, nan=0.0)
     lon_grid, lat_grid = np.meshgrid(matlon, matlat)
 
     land_pm = loadmat('./out/mat_file/landmat/land_pm.mat')
@@ -489,9 +454,6 @@ def save_annual_tiff_land():
     save_tiff('./tif_file/annual/pop_bt_15_64.tif', pop_bt_15_64, lon_grid, lat_grid)
     save_tiff('./tif_file/annual/pop_bt_65.tif', pop_bt_65, lon_grid, lat_grid)
 
-    save_tiff('./tif_file/annual/aqg_pm10.tif', aqg_pm10, lon_grid, lat_grid)
-    save_tiff('./tif_file/annual/aqg_pm25.tif', aqg_pm25, lon_grid, lat_grid)
-
     save_tiff('./tif_file/annual/pm25_pop.tif', pm252020_data*pop_bt, lon_grid, lat_grid)
     save_tiff('./tif_file/annual/pm10_pop.tif', pm102020_data*pop_bt, lon_grid, lat_grid)
 
@@ -508,9 +470,6 @@ def save_annual_tiff_land():
 
     weighted_pm25, weighted_pm25_district = get_district_data('./tif_file/annual/pm25_2020.tif', 'pm25_2020', pm252020_data)
     weighted_pm10, weighted_pm10_district = get_district_data('./tif_file/annual/pm10_2020.tif', 'pm10_2020', pm102020_data)
-
-    weighted_daily_pm25, weighted_daily_pm25_district = get_district_data('./tif_file/annual/aqg_pm25.tif', 'day_pm25', aqg_pm25)
-    weighted_daily_pm10, weighted_daily_pm10_district = get_district_data('./tif_file/annual/aqg_pm10.tif', 'day_pm10', aqg_pm10)
 
     weighted_pop_bt, weighted_pop_bt_district = get_district_data('./tif_file/annual/pop_bt.tif', 'pop_bt', pop_bt)
     weighted_pop_mt, weighted_pop_mt_district = get_district_data('./tif_file/annual/pop_mt.tif', 'pop_mt', pop_mt)
