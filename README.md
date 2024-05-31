@@ -13,7 +13,7 @@
 
 ## 1.Description
 
-Innovative Stacking Method for Enhanced Data Fusion in Pollutant Population Risk Evaluation
+*Innovative Stacking Method for Enhanced Data Fusion in Pollutant Population Risk Evaluation*
 ![weighted_pop_pm25](https://github.com/Jyyd/PM_con_Estimate/blob/main/figure/weighted_pop_pm25.png)
 ![weighted_pop_pm10](https://github.com/Jyyd/PM_con_Estimate/blob/main/figure/weighted_pop_pm10.png)
 ![swiss_pm10_pop](https://github.com/Jyyd/PM_con_Estimate/blob/main/figure/swiss_pm10_pop.png)
