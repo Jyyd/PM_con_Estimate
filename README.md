@@ -9,7 +9,7 @@
  * Copyright (c) 2024 by ${git_name_email}, All Rights Reserved. 
 -->
 
-# My_Project: Innovative Stacking Method for Enhanced Data Fusion in Pollutant Population Risk Evaluation
+# Innovative Stacking Method for Enhanced Data Fusion in Pollutant Population Risk Evaluation
 
 ## 1.Description
 
