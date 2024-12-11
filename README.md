@@ -28,7 +28,6 @@ con_code
 ├─ PM_pop.py
 ├─ PM_pred.py
 ├─ PM_stack.py
-├─ test_plot.ipynb
 ├─ tif_file
 │  ├─ annual
 │  └─ wash_tiff
